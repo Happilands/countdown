@@ -122,7 +122,7 @@ std::string Countdown::solutionToString(Solution solution){
     int resIndex = -1;
 
     int opIndex = 0;
-    while (opIndex < 5 && !solution.operations[opIndex].isZero()){
+    while (opIndex < 8 && !solution.operations[opIndex].isZero()){
         Operation operation = solution.operations[opIndex];
 
         int i = operation.getFirst();
