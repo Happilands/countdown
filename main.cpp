@@ -44,5 +44,9 @@ int main() {
 
     std::cout << "Time to print strings: " << print_time << " ms" << std::endl;
 
+    std::cout << "Press any key twice to exit." << std::endl;
+    std::cin.get();
+    std::cin.get();
+
     return 0;
 }
