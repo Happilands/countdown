@@ -200,4 +200,4 @@ prop_lemma4 (xs, ys, zs) = ((xs, ys) `elem` nesplit zs) -->
 prop_solutions (ns, m) = solutions ns m == solutions' ns m
 
 
-main = putStrLn $ show $ length $ solutions' [1,3,7,8,10,25,50] 765
+main = putStrLn $ show $ solutions' [2, 2, 2] 8

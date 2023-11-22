@@ -34,7 +34,15 @@ std::vector<Solution>& Countdown::findSolutions(Position &position) {
     auto& solutionList = iter->second;
 
     for(int i = 0; i + 1 < position.size(); i++){
+        // If two numbers in the position are equal, we can skip a lot of work
+        if(i > 0 && position[i] == position[i - 1])
+            continue;
+
         for(int j = i + 1; j < position.size(); j++){
+            // If two numbers in the position are equal, we can skip a lot of work
+            if(j > i + 1 && position[j] == position[j - 1])
+                continue;
+
             int32_t n = position[i];
             int32_t m = position[j];
 
