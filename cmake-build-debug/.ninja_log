@@ -1,0 +1,25 @@
+# ninja log v5
+3	567	7223659780993681	CMakeFiles/countdown.dir/main.cpp.obj	fc17acd147d71770
+567	842	7223659783733388	countdown.exe	b8d766477aa344a
+7	1144	7223656209266826	CMakeFiles/countdown.dir/src/countdown.cpp.obj	c9c34d8e5cac3cac
+1	136	7223660185260712	build.ninja	a0e44f67e4b8e4c9
+19	938	7222812411340170	CMakeFiles/countdown.dir/src/verdeelbuis.cpp.obj	e6fb9051ca0c4b51
+1	308	7223660185260712	build.ninja	a0e44f67e4b8e4c9
+3	258	7223660188545615	countdown.exe	30860bca8061911f
+3	583	7223660296180741	CMakeFiles/countdown.dir/main.cpp.obj	fc17acd147d71770
+583	840	7223660298720721	countdown.exe	30860bca8061911f
+3	568	7223660371118525	CMakeFiles/countdown.dir/main.cpp.obj	fc17acd147d71770
+569	821	7223660373628890	countdown.exe	30860bca8061911f
+3	1139	7223662706868900	CMakeFiles/countdown.dir/src/countdown.cpp.obj	c9c34d8e5cac3cac
+1140	1406	7223662709528071	countdown.exe	30860bca8061911f
+2	568	7223662760217501	CMakeFiles/countdown.dir/main.cpp.obj	fc17acd147d71770
+569	831	7223662762807041	countdown.exe	30860bca8061911f
+3	569	7223662836053722	CMakeFiles/countdown.dir/main.cpp.obj	fc17acd147d71770
+570	827	7223662838606108	countdown.exe	30860bca8061911f
+3	599	7223663455610589	CMakeFiles/countdown.dir/main.cpp.obj	fc17acd147d71770
+8	1119	7223663460770593	CMakeFiles/countdown.dir/src/countdown.cpp.obj	c9c34d8e5cac3cac
+1119	1379	7223663463375872	countdown.exe	30860bca8061911f
+3	567	7223663508226137	CMakeFiles/countdown.dir/main.cpp.obj	fc17acd147d71770
+568	824	7223663510770617	countdown.exe	30860bca8061911f
+3	562	7223663559291212	CMakeFiles/countdown.dir/main.cpp.obj	fc17acd147d71770
+562	826	7223663561901680	countdown.exe	30860bca8061911f
