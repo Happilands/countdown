@@ -92,8 +92,6 @@ public:
     explicit Countdown(const Position& start, int32_t result);
 
     std::vector<Solution>& findSolutions();
-    bool hasSolution();
-    int32_t findSolutionCount();
 
 public:
     void removeDuplicatesAndConvertToStrings(const std::vector<Solution>& solutions, std::unordered_set<std::string>& output);

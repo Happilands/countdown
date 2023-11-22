@@ -1,3 +1,0 @@
-C:/Users/daanp/Documents/Informatica/bach2/FunProg/countdown/cmake-build-debug/CMakeFiles/countdown.dir
-C:/Users/daanp/Documents/Informatica/bach2/FunProg/countdown/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/daanp/Documents/Informatica/bach2/FunProg/countdown/cmake-build-debug/CMakeFiles/rebuild_cache.dir

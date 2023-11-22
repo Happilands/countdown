@@ -21,120 +21,9 @@ Countdown::Countdown(const Position& _start, int32_t result) {
     std::sort(m_Start.rbegin(), m_Start.rend());
 }
 
-bool Countdown::hasSolution() {
-    if(std::find(m_Start.begin(), m_Start.end(), m_Result) != m_Start.end())
-        return true;
-
-    auto pos = m_Start;
-    return hasSolution(pos);
-}
-
 std::vector<Solution>& Countdown::findSolutions() {
     auto pos = m_Start;
     return findSolutions(pos);
-}
-
-int32_t Countdown::findSolutionCount() {
-    auto pos = m_Start;
-
-    countSolutions(pos);
-
-    return m_Numbers2SolutionCount[pos];
-}
-
-int32_t Countdown::countSolutions(Position &position) {
-    auto pair = m_Numbers2SolutionCount.insert(std::make_pair(position, 0));
-
-    int32_t& solutionCount = pair.first->second;
-    bool& wasInserted = pair.second;
-
-    // If position couldn't be inserted look up the value in the table
-    if(!wasInserted)
-        return solutionCount;
-
-    // Item was inserted, now find m_Solutions
-    for(auto it = position.begin(); it != position.end() - 1; it++){
-        for(auto jt = it + 1; jt != position.end(); jt++){
-            int32_t n = *it;
-            int32_t m = *jt;
-
-            position.erase(jt);
-            position.erase(it);
-
-            auto doOperation = [this, &solutionCount, &position](OperationType op, int32_t res) -> void {
-                int solutionMultiplier = 1 + ((op == Addition) || (op == Multiplication));
-
-                if(res == m_Result) {
-                    solutionCount += solutionMultiplier;
-                    return;
-                }
-
-                auto kt = position.begin();
-                while (kt != position.end() && res < *kt)
-                    kt++;
-
-                position.insert(kt, res);
-
-                solutionCount += countSolutions(position) * solutionMultiplier;
-
-                position.erase(kt);
-            };
-
-            doOperation(Addition, n + m);
-            doOperation(Multiplication, n * m);
-            if(n != m)
-                doOperation(Subtraction, n - m);
-            if(n % m == 0)
-                doOperation(Division, n / m);
-
-            position.insert(it, n);
-            position.insert(jt, m);
-        }
-    }
-
-    return solutionCount;
-}
-
-bool Countdown::hasSolution(Position& position) {
-    for(auto it = position.begin(); it != position.end() - 1; it++){
-        for(auto jt = it + 1; jt != position.end(); jt++){
-            int32_t n = *it;
-            int32_t m = *jt;
-
-            position.erase(jt);
-            position.erase(it);
-
-            auto doOperation = [this, &position](OperationType op, int32_t res) -> bool {
-                if(res == m_Result)
-                    return true;
-
-                auto kt = position.begin();
-                while (kt != position.end() && res < *kt)
-                    kt++;
-
-                position.insert(kt, res);
-
-                if(hasSolution(position))
-                    return true;
-
-                position.erase(kt);
-                return false;
-            };
-
-            if(doOperation(Addition, n + m))
-                return true;
-            if(doOperation(Multiplication, n * m))
-                return true;
-            if(doOperation(Subtraction, n - m))
-                return true;
-            if(m != 0 && n % m == 0 && doOperation(Division, n / m))
-                return true;
-
-            position.insert(it, n);
-            position.insert(jt, m);
-        }
-    }
-    return false;
 }
 
 std::vector<Solution>& Countdown::findSolutions(Position &position) {
@@ -144,7 +33,7 @@ std::vector<Solution>& Countdown::findSolutions(Position &position) {
     iter = m_Numbers2solutions.insert(std::make_pair(position, std::vector<Solution>())).first;
     auto& solutionList = iter->second;
 
-    for(int i = 0; i < position.size() - 1; i++){
+    for(int i = 0; i + 1 < position.size(); i++){
         for(int j = i + 1; j < position.size(); j++){
             int32_t n = position[i];
             int32_t m = position[j];
@@ -230,6 +119,8 @@ std::string Countdown::solutionToString(Solution solution){
         numbers.emplace_back(i, std::to_string(i));
     }
 
+    int resIndex = -1;
+
     int opIndex = 0;
     while (opIndex < 5 && !solution.operations[opIndex].isZero()){
         Operation operation = solution.operations[opIndex];
@@ -251,14 +142,14 @@ std::string Countdown::solutionToString(Solution solution){
         if(j <= i)
             numbers.erase(numbers.begin() + j);
 
-        auto kt = numbers.begin();
-        while (kt != numbers.end() && res < (*kt).first)
-            kt++;
+        resIndex = 0;
+        while (resIndex < numbers.size() && res < numbers[resIndex].first)
+            resIndex++;
 
-        numbers.insert(kt, std::make_pair(res, ss.str()));
+        numbers.insert(numbers.begin() + resIndex, std::make_pair(res, ss.str()));
         opIndex++;
     }
-    return numbers[0].second;
+    return numbers[resIndex].second;
 }
 
 void Countdown::removeDuplicatesAndConvertToStrings(const std::vector<Solution> &solutions, std::unordered_set<std::string> &output) {
