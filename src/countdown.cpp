@@ -26,11 +26,93 @@ std::vector<Solution>& Countdown::findSolutions() {
     return findSolutions(pos);
 }
 
+std::string Countdown::findSolution() {
+    auto pos = m_Start;
+
+    Solution solution = findSolution(pos);
+
+    if(solution.isNull())
+        return {};
+
+    return solutionToString(solution);
+}
+
+Solution Countdown::findSolution(Position &position) {
+    bool inserted = m_CheckedPositions.insert(position).second;
+
+    if(!inserted)
+        return {};
+
+    for(int i = 0; i + 1 < position.size(); i++){
+        // If two numbers in the position are equal, we can skip a lot of work
+        if(i > 0 && position[i] == position[i - 1])
+            continue;
+
+        for(int j = i + 1; j < position.size(); j++){
+            // If two numbers in the position are equal, we can skip a lot of work
+            if(j > i + 1 && position[j] == position[j - 1])
+                continue;
+
+            int32_t n = position[i];
+            int32_t m = position[j];
+
+            position.erase(position.begin() + j);
+            position.erase(position.begin() + i);
+
+            auto doOperation = [i, j, this, &position](OperationType operationType, int32_t res) -> Solution {
+                Operation operation = Operation(operationType, i, j);
+
+                if(res == m_Result) {
+                    return Solution(operation);
+                }
+
+                int k = 0;
+                while (k < position.size() && res < position[k])
+                    k++;
+
+                position.insert(position.begin() + k, res);
+
+                Solution solution = findSolution(position);
+
+                if(!solution.isNull())
+                    solution.prependOperation(operation);
+
+                position.erase(position.begin() + k);
+
+                return solution;
+            };
+
+            Solution solution;
+            solution = doOperation(Addition, n + m);
+            if(!solution.isNull())
+                return solution;
+            solution = doOperation(Multiplication, n * m);
+            if(!solution.isNull())
+                return solution;
+            if(n != m) {
+                solution = doOperation(Subtraction, n - m);
+                if(!solution.isNull())
+                    return solution;
+            }
+            if(n % m == 0) {
+                solution = doOperation(Division, n / m);
+                if(!solution.isNull())
+                    return solution;
+            }
+
+            position.insert(position.begin() + i, n);
+            position.insert(position.begin() + j, m);
+        }
+    }
+
+    return {};
+}
+
 std::vector<Solution>& Countdown::findSolutions(Position &position) {
-    auto iter = m_Numbers2solutions.find(position);
-    if(iter != m_Numbers2solutions.end())
+    auto iter = m_Position2solutions.find(position);
+    if(iter != m_Position2solutions.end())
         return iter->second;
-    iter = m_Numbers2solutions.insert(std::make_pair(position, std::vector<Solution>())).first;
+    iter = m_Position2solutions.insert(std::make_pair(position, std::vector<Solution>())).first;
     auto& solutionList = iter->second;
 
     for(int i = 0; i + 1 < position.size(); i++){

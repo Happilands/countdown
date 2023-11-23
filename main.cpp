@@ -3,8 +3,9 @@
 #include "src/countdown.h"
 
 #include <ctime>
+#include <chrono>
 
-int main() {
+int findAllSolutions(){
     /*std::vector<int32_t> numbers;
     std::cout << "Enter starting numbers: \nStops when a non-positive number is entered\n";
     int32_t i;
@@ -18,38 +19,43 @@ int main() {
     int32_t result;
     std::cin >> result;*/
 
-    Countdown countdown{{1, 3, 7, 10, 25, 50}, 765};
+    Countdown countdown{{1,3,7,10,25,50}, 765};
 
     // START
-    std::clock_t    start;
-    start = std::clock();
+    auto start = std::chrono::high_resolution_clock::now();
 
     auto& solutions_including_duplicates = countdown.findSolutions();
 
-    double find_time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000);
-    start = std::clock();
+    auto now = std::chrono::high_resolution_clock::now();
+    long long find_time = std::chrono::duration_cast<std::chrono::microseconds>(
+            now - start).count();
+    start = now;
 
     std::unordered_set<std::string> strings;
     countdown.removeDuplicatesAndConvertToStrings(solutions_including_duplicates, strings);
 
-    // AAAAND TIME!
-    double construct_time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000);
-    start = std::clock();
+    now = std::chrono::high_resolution_clock::now();
+    long long construct_time = std::chrono::duration_cast<std::chrono::microseconds>(
+            now - start).count();
+    start = now;
 
     // I don't count the construct_time it takes to print the strings
     for(const auto & string : strings){
         std::cout << string << std::endl;
     }
 
+    now = std::chrono::high_resolution_clock::now();
+    long long print_time = std::chrono::duration_cast<std::chrono::microseconds>(
+            now - start).count();
+    start = now;
+
     std::cout << "# solutions: " << strings.size() << std::endl;
     std::cout << "Duplicates: " << solutions_including_duplicates.size() << std::endl;
 
-    std::cout << "Time to find duplicates: " << find_time << " ms" << std::endl;
-    std::cout << "Time to construct strings: " << construct_time << " ms" << std::endl;
+    std::cout << "Time to find duplicates: " << (double)find_time / 1000.0 << " ms" << std::endl;
+    std::cout << "Time to construct strings: " << (double)construct_time / 1000.0 << " ms" << std::endl;
 
-    double print_time = (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000);
-
-    std::cout << "Time to print strings: " << print_time << " ms" << std::endl;
+    std::cout << "Time to print strings: " << (double)print_time / 1000.0 << " ms" << std::endl;
 
 
     std::cout << "Press any key twice to exit." << std::endl;
@@ -57,4 +63,26 @@ int main() {
     std::cin.get();
 
     return 0;
+}
+
+int findOneSolution(){
+    Countdown countdown{{1,3,7,10,25,50}, 765};
+
+    // START
+    auto start = std::chrono::high_resolution_clock::now();
+
+    std::string solution = countdown.findSolution();
+
+    auto elapsed = std::chrono::high_resolution_clock::now() - start;
+    long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(
+            elapsed).count();
+
+    std::cout << "Time to find one solution: " << microseconds << " us" << std::endl;
+    std::cout << "Solution: " << solution << std::endl;
+
+    return 0;
+}
+
+int main() {
+    return findAllSolutions();
 }

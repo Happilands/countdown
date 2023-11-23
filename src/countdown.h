@@ -66,7 +66,9 @@ public:
         bits = operation.getBits();
     }
 
-    explicit operator uint64_t () const { return *((uint64_t*)this); }
+    inline bool isNull(){
+        return bits == 0;
+    }
 
     void prependOperation(Operation op){
         bits <<= 8;
@@ -92,22 +94,22 @@ public:
     explicit Countdown(const Position& start, int32_t result);
 
     std::vector<Solution>& findSolutions();
+    std::string findSolution();
 
 public:
     void removeDuplicatesAndConvertToStrings(const std::vector<Solution>& solutions, std::unordered_set<std::string>& output);
 
 private:
-    std::vector<Solution>& findSolutions(std::vector<int32_t>& operationType);
-    bool hasSolution(std::vector<int32_t>& position);
-    int32_t countSolutions(std::vector<int32_t>& position);
+    std::vector<Solution>& findSolutions(Position& position);
     std::string solutionToString(Solution solution);
+    Solution findSolution(Position& position);
 
 private:
     int32_t m_Result = -1;
     Position m_Start;
 
-    std::unordered_map<Position, std::vector<Solution>> m_Numbers2solutions;
-    std::unordered_map<Position, int32_t> m_Numbers2SolutionCount;
+    std::unordered_map<Position, std::vector<Solution>> m_Position2solutions;
+    std::unordered_set<Position> m_CheckedPositions;
 };
 
 #endif //COUNTDOWN_COUNTDOWN_H
